@@ -38,8 +38,8 @@
                                     </v-container>
                                 </v-dialog>
                             <v-btn class="bg-black w-50 mx-5" @click="addtaskdialog=true">Add Task</v-btn>
-                                <v-dialog v-model="addtaskdialog">
-                                    <v-container class="d-flex flex-column justify-center align-center w-50" :style="board.color == '' ? `background-color:white` : `background-color:${board.color}`" >
+                                <v-dialog v-model="addtaskdialog" class="w-50">
+                                    <v-container class="d-flex flex-column justify-center align-center w-100" :style="board.color == '' ? `background-color:white` : `background-color:${board.color}`" >
                                         <p class="text-h4 rounded px-2">
                                             Add a task
                                         </p>
@@ -49,7 +49,7 @@
                                             type="text"
                                             :rules="[(title) => !!title || 'Task title is required']"
                                             required  
-                                            v-model="task.title"
+                                            v-model="task.tasktitle"
                                             class="w-50"
                                             
                                         />
@@ -69,7 +69,7 @@
                                             class="w-50"
                                             :items="['To Do', 'In Progress', 'Done']"
                                             v-model="task.status"
-                                            :value="'To Do'"
+                                            required
                                         />
                                         <v-color-picker
                                             dot-size="20"
@@ -82,8 +82,6 @@
                                         <v-btn @click="addtask" class="bg-black text-white" :elevation="4">
                                             Submit
                                         </v-btn>
-
-                                        
                                     </v-container>
                                 </v-dialog>
                         </v-container>
@@ -96,7 +94,7 @@
                     bottom 
                     color="primary"
                 >
-                    Successful
+                    {{ snackbartext }}
                 </v-snackbar>
         </v-container> 
       </v-main>
@@ -108,6 +106,7 @@ import { v4 as uuidv4} from 'uuid'
 export default{
     data(){
         return {
+            snackbartext: 'Successful',
             addtaskdialog: false,
             snackbaron: false, 
             dialogopen: false, 
@@ -117,7 +116,7 @@ export default{
             }, 
             task: {
                 id: '',
-                title:'',
+                tasktitle:'',
                 description: '',
                 status: '',
                 color: ''
@@ -126,9 +125,17 @@ export default{
     }, 
     methods:{
         addtask(){
-            this.task.id = uuidv4(),
-            this.snackbaron=true,
-            this.addtaskdialog=false   
+            this.task.id = uuidv4();
+            if(this.task.tasktitle == '' || this.task.description == '' || this.task.status == ''){
+                this.snackbartext = 'Please fill in all fields'; 
+                this.snackbaron = true; 
+                return;
+            }
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || []; 
+            tasks.push(this.task); 
+            localStorage.setItem('tasks', JSON.stringify(tasks)); 
+            this.addtaskdialog=false;   
+            this.snackbaron=true; 
         }
 
     }
