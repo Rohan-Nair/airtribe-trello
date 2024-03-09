@@ -87,6 +87,98 @@
                         </v-container>
                     </div>
                 </v-form>
+                <v-container class="d-flex flex-row justify-space-evenly align-start">
+                    <!-- Column for tasks with status "To Do" -->
+                    <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
+                        <h2>To Do</h2> <!-- Heading for "To Do" column -->
+                        <v-row>
+                            <v-col
+                                v-for="task in alltasks.filter(t => t.status === 'To Do')"
+                                :key="task.id"
+                                class="d-flex flex-column justify-center align-center"
+                            >
+                                <v-card
+                                    class="mx-5 my-2"
+                                    :color="task.color"
+                                    :elevation="5"
+                                >
+                                    <v-card-title class="text-h6">
+                                        {{ task.tasktitle }}
+                                    </v-card-title>
+                                    <v-card-text>
+                                        {{ task.description }}
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn>
+                                        <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+
+                    <!-- Column for tasks with status "In Progress" -->
+                    <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
+                        <h2>In Progress</h2> <!-- Heading for "In Progress" column -->
+                        <v-row>
+                            <v-col
+                                v-for="task in alltasks.filter(t => t.status === 'In Progress')"
+                                :key="task.id"
+                                class="d-flex flex-column justify-center align-center"
+                            >
+                                <v-card
+                                    class="mx-5 my-2"
+                                    :color="task.color"
+                                    :elevation="5"
+                                >
+                                    <v-card-title class="text-h6">
+                                        {{ task.tasktitle }}
+                                    </v-card-title>
+                                    <v-card-text>
+                                        {{ task.description }}
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn>
+                                        <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+
+                    <!-- Column for tasks with status "Done" -->
+                    <v-col cols="12" md="4" lg="3"class="d-flex flex-column align-center">
+                        <h2>Done</h2> <!-- Heading for "Done" column -->
+                        <v-row>
+                            <v-col
+                                v-for="task in alltasks.filter(t => t.status === 'Done')"
+                                :key="task.id"
+                                class="d-flex flex-column justify-center align-center"
+                            >
+                                <v-card
+                                    class="mx-5 my-2"
+                                    :color="task.color"
+                                    :elevation="5"
+                                >
+                                    <v-card-title class="text-h6">
+                                        {{ task.tasktitle }}
+                                    </v-card-title>
+                                    <v-card-text>
+                                        {{ task.description }}
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn>
+                                        <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-container>
+
+                
+ 
+
                 <v-snackbar
                     :timeout = "3000"
                     v-model = "snackbaron"
@@ -120,22 +212,60 @@ export default{
                 description: '',
                 status: '',
                 color: ''
-            }
+            }, 
+            alltasks: [],
         }
     }, 
+    mounted(){
+        if (typeof window !== 'undefined'){
+            this.alltasks = JSON.parse(window.localStorage.getItem('tasks')) || [];
+        }
+    },
     methods:{
         addtask(){
+            if (this.task.id !== ''){
+                const index = this.alltasks.findIndex(task => task.id === this.task.id);
+                this.alltasks[index] = this.task;
+                localStorage.setItem('tasks', JSON.stringify(this.alltasks)); 
+                this.task = {
+                    id: '',
+                    tasktitle:'',
+                    description: '',
+                    status: '',
+                    color: ''
+                }
+                this.addtaskdialog=false; 
+                this.snackbartext = 'Task updated successfully'; 
+                this.snackbaron = true; 
+                return;
+            }
             this.task.id = uuidv4();
             if(this.task.tasktitle == '' || this.task.description == '' || this.task.status == ''){
                 this.snackbartext = 'Please fill in all fields'; 
                 this.snackbaron = true; 
                 return;
             }
-            let tasks = JSON.parse(localStorage.getItem('tasks')) || []; 
-            tasks.push(this.task); 
-            localStorage.setItem('tasks', JSON.stringify(tasks)); 
+            this.alltasks.push(this.task); 
+            localStorage.setItem('tasks', JSON.stringify(this.alltasks)); 
+            this.task = {
+                id: '',
+                tasktitle:'',
+                description: '',
+                status: '',
+                color: ''
+            }
             this.addtaskdialog=false;   
             this.snackbaron=true; 
+        }, 
+        deletetask(id){
+            this.alltasks = this.alltasks.filter(task => task.id !== id.id);
+            localStorage.setItem('tasks', JSON.stringify(this.alltasks)); 
+            this.snackbartext = 'Task deleted successfully'; 
+            this.snackbaron = true; 
+        },
+        editTask(incomingtask){
+            this.task = {...incomingtask, id: incomingtask.id};
+            this.addtaskdialog = true;
         }
 
     }
