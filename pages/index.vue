@@ -90,17 +90,25 @@
                 <v-container class="d-flex flex-row justify-space-evenly align-start">
                     <!-- Column for tasks with status "To Do" -->
                     <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
-                        <h2>To Do</h2> <!-- Heading for "To Do" column -->
+                        <h2
+                        @drop="drop($event, 'To Do')"
+                        @dragover="allowDrop($event)"
+                        >To Do</h2> <!-- Heading for "To Do" column -->
                         <v-row>
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'To Do')"
                                 :key="task.id"
                                 class="d-flex flex-column justify-center align-center"
+                                @drop="drop($event, 'To Do')"
+                                @dragover="allowDrop($event)"
                             >
                                 <v-card
                                     class="mx-5 my-2"
                                     :color="task.color"
                                     :elevation="5"
+                                    :draggable="true"
+                                    @dragstart="drag($event, task)"
+                                    @dragover.prevent
                                 >
                                     <v-card-title class="text-h6">
                                         {{ task.tasktitle }}
@@ -119,17 +127,24 @@
 
                     <!-- Column for tasks with status "In Progress" -->
                     <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
-                        <h2>In Progress</h2> <!-- Heading for "In Progress" column -->
+                        <h2
+                        @drop="drop($event, 'In Progress')"
+                        @dragover="allowDrop($event)">In Progress</h2> <!-- Heading for "In Progress" column -->
                         <v-row>
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'In Progress')"
                                 :key="task.id"
                                 class="d-flex flex-column justify-center align-center"
+                                @drop="drop($event, 'In Progress')"
+                                @dragover="allowDrop($event)"
                             >
                                 <v-card
                                     class="mx-5 my-2"
                                     :color="task.color"
                                     :elevation="5"
+                                    :draggable="true"
+                                    @dragstart="drag($event, task)"
+                                    @dragover.prevent
                                 >
                                     <v-card-title class="text-h6">
                                         {{ task.tasktitle }}
@@ -148,17 +163,24 @@
 
                     <!-- Column for tasks with status "Done" -->
                     <v-col cols="12" md="4" lg="3"class="d-flex flex-column align-center">
-                        <h2>Done</h2> <!-- Heading for "Done" column -->
+                        <h2
+                        @drop="drop($event, 'Done')"
+                        @dragover="allowDrop($event)">Done</h2> <!-- Heading for "Done" column -->
                         <v-row>
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'Done')"
                                 :key="task.id"
                                 class="d-flex flex-column justify-center align-center"
+                                @drop="drop($event, 'Done')"
+                                @dragover="allowDrop($event)"
                             >
                                 <v-card
                                     class="mx-5 my-2"
                                     :color="task.color"
                                     :elevation="5"
+                                    :draggable="true"
+                                    @dragstart="drag($event, task)"
+                                    @dragover.prevent
                                 >
                                     <v-card-title class="text-h6">
                                         {{ task.tasktitle }}
@@ -266,7 +288,22 @@ export default{
         editTask(incomingtask){
             this.task = {...incomingtask, id: incomingtask.id};
             this.addtaskdialog = true;
+        }, 
+        allowDrop(ev){
+            ev.preventDefault();
+        },
+        drop(ev, status){
+            ev.preventDefault();
+            const task = JSON.parse(ev.dataTransfer.getData('task'));
+            task.status = status;
+            const index = this.alltasks.findIndex(t => t.id === task.id);
+            this.alltasks[index] = task;
+            localStorage.setItem('tasks', JSON.stringify(this.alltasks)); 
+        },
+        drag(ev, task){
+            ev.dataTransfer.setData('task', JSON.stringify(task));
         }
+
 
     }
 }
