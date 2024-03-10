@@ -6,7 +6,7 @@
                     <p class="text-black font-bold text-h4">Trello</p>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-container class="h-screen">
+            <v-container class="h-auto">
                 <v-form ref="form">
                     <div class="d-flex flex-column">
                         <v-text-field
@@ -63,14 +63,6 @@
                                             v-model="task.description"
                                             auto-grow
                                         />
-                                        <v-select
-                                            label="Status"
-                                            name="status"
-                                            class="w-50"
-                                            :items="['To Do', 'In Progress', 'Done']"
-                                            v-model="task.status"
-                                            required
-                                        />
                                         <v-color-picker
                                             dot-size="20"
                                             hide-inputs
@@ -78,6 +70,14 @@
                                             :elevation="4"
                                             class="bg-black align-self-center mb-5 mt-2"
                                             v-model="task.color"
+                                        />
+                                        <v-select
+                                            label="Status"
+                                            name="status"
+                                            class="w-50"
+                                            :items="['To Do', 'In Progress', 'Done']"
+                                            v-model="task.status"
+                                            required
                                         />
                                         <v-btn @click="addtask" class="bg-black text-white" :elevation="4">
                                             Submit
@@ -93,7 +93,11 @@
                         <h2
                         @drop="drop($event, 'To Do')"
                         @dragover="allowDrop($event)"
-                        >To Do</h2> <!-- Heading for "To Do" column -->
+                        class="text-h5 bg-red px-2 py-1 rounded text-black "
+                        >To Do <span>
+                            [{{ alltasks.filter(t => t.status === 'To Do').length }}]
+                        </span>
+                        </h2> 
                         <v-row>
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'To Do')"
@@ -129,7 +133,13 @@
                     <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
                         <h2
                         @drop="drop($event, 'In Progress')"
-                        @dragover="allowDrop($event)">In Progress</h2> <!-- Heading for "In Progress" column -->
+                        @dragover="allowDrop($event)"
+                        class="text-h5 bg-yellow px-2 py-1 rounded"
+                        >In Progress
+                        <span>
+                            [{{ alltasks.filter(t => t.status === 'In Progress').length }}]
+                        </span>
+                     </h2>
                         <v-row>
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'In Progress')"
@@ -165,7 +175,13 @@
                     <v-col cols="12" md="4" lg="3"class="d-flex flex-column align-center">
                         <h2
                         @drop="drop($event, 'Done')"
-                        @dragover="allowDrop($event)">Done</h2> <!-- Heading for "Done" column -->
+                        @dragover="allowDrop($event)"
+                        class="text-h5 bg-green text-black px-2 py-1 rounded"
+                        >Done
+                        <span>
+                            [{{ alltasks.filter(t => t.status === 'Done').length }}]
+                        </span>
+                    </h2> 
                         <v-row>
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'Done')"
