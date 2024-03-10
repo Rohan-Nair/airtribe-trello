@@ -88,8 +88,14 @@
                     </div>
                 </v-form>
                 <v-container class="d-flex flex-row justify-space-evenly align-start">
+                    <v-container class="d-flex flex-column align-center" :style="`width:1/3;`">
                     <!-- Column for tasks with status "To Do" -->
-                    <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
+
+                    <v-col cols="12" class="d-flex flex-column align-center justify-start rounded "
+                        :style="`min-height:400px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border:1px solid black`"
+                        @drop="drop($event, 'To Do')"
+                        @dragover="allowDrop($event)"
+                    >
                         <h2
                         @drop="drop($event, 'To Do')"
                         @dragover="allowDrop($event)"
@@ -102,7 +108,7 @@
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'To Do')"
                                 :key="task.id"
-                                class="d-flex flex-column justify-center align-center"
+                                class="d-flex flex-column align-center"
                                 @drop="drop($event, 'To Do')"
                                 @dragover="allowDrop($event)"
                             >
@@ -128,9 +134,15 @@
                             </v-col>
                         </v-row>
                     </v-col>
+                    </v-container>
 
+                    <v-container class="d-flex flex-column align-center" :style="`width:1/3`">
                     <!-- Column for tasks with status "In Progress" -->
-                    <v-col cols="12" md="4" lg="3" class="d-flex flex-column align-center">
+                    <v-col cols="12" class="d-flex flex-column align-center justify-start rounded "
+                        :style="`min-height:400px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border:1px solid black`"
+                        @drop="drop($event, 'In Progress')"
+                        @dragover="allowDrop($event)"
+                    >
                         <h2
                         @drop="drop($event, 'In Progress')"
                         @dragover="allowDrop($event)"
@@ -144,7 +156,7 @@
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'In Progress')"
                                 :key="task.id"
-                                class="d-flex flex-column justify-center align-center"
+                                class="d-flex flex-column align-center"
                                 @drop="drop($event, 'In Progress')"
                                 @dragover="allowDrop($event)"
                             >
@@ -170,9 +182,15 @@
                             </v-col>
                         </v-row>
                     </v-col>
+                    </v-container>
 
+                    <v-container class="d-flex flex-column align-center" :style="`width:1/3`">
                     <!-- Column for tasks with status "Done" -->
-                    <v-col cols="12" md="4" lg="3"class="d-flex flex-column align-center">
+                    <v-col cols="12" class="d-flex flex-column align-center justify-start rounded "
+                        :style="`min-height:400px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border:1px solid black`"
+                        @drop="drop($event, 'Done')"
+                        @dragover="allowDrop($event)"
+                    >
                         <h2
                         @drop="drop($event, 'Done')"
                         @dragover="allowDrop($event)"
@@ -186,7 +204,7 @@
                             <v-col
                                 v-for="task in alltasks.filter(t => t.status === 'Done')"
                                 :key="task.id"
-                                class="d-flex flex-column justify-center align-center"
+                                class="d-flex flex-column align-center"
                                 @drop="drop($event, 'Done')"
                                 @dragover="allowDrop($event)"
                             >
@@ -212,6 +230,7 @@
                             </v-col>
                         </v-row>
                     </v-col>
+                    </v-container>
                 </v-container>
 
                 
