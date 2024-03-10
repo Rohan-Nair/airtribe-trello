@@ -113,23 +113,27 @@
                                 @dragover="allowDrop($event)"
                             >
                                 <v-card
-                                    class="mx-5 my-2"
+                                    class="mx-5 my-2 d-flex flex-row align-center py-0"
                                     :color="task.color"
                                     :elevation="5"
                                     :draggable="true"
                                     @dragstart="drag($event, task)"
                                     @dragover.prevent
                                 >
-                                    <v-card-title class="text-h6">
-                                        {{ task.tasktitle }}
-                                    </v-card-title>
-                                    <v-card-text>
-                                        {{ task.description }}
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn>
-                                        <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn>
-                                    </v-card-actions>
+                                    <v-container class="w-75 py-2">
+                                        <v-card-title class="text-h6 py-0 text-decoration-underline">
+                                            {{ task.tasktitle.split(' ').slice(0, 4).join(' ') + (task.tasktitle.split(' ').length > 4 ? '...' : '') }}
+                                        </v-card-title>
+                                        <v-card-text class="py-0" style="word-wrap: break-word;">
+                                            {{ task.description.length > 150 ? task.description.slice(0, 150) + '...' : task.description }}
+                                        </v-card-text>
+                                    </v-container>
+                                    <v-container class="w-25 py-2">
+                                        <v-card-actions class="d-flex flex-column align-end ">
+                                            <v-btn class="mb-1" :style="`border:2px solid black`" @click="editTask(task)"><v-icon   icon="mdi-pencil"/></v-btn>
+                                            <v-btn class="mt-1" :style="`border:2px solid black`" @click="deletetask(task)"><v-icon icon="mdi-delete"/></v-btn>
+                                        </v-card-actions>
+                                    </v-container>
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -161,23 +165,27 @@
                                 @dragover="allowDrop($event)"
                             >
                                 <v-card
-                                    class="mx-5 my-2"
+                                    class="mx-5 my-2 d-flex flex-row align-center py-0"
                                     :color="task.color"
                                     :elevation="5"
                                     :draggable="true"
                                     @dragstart="drag($event, task)"
                                     @dragover.prevent
                                 >
-                                    <v-card-title class="text-h6">
-                                        {{ task.tasktitle }}
-                                    </v-card-title>
-                                    <v-card-text>
-                                        {{ task.description }}
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn>
-                                        <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn>
-                                    </v-card-actions>
+                                    <v-container class="w-75 py-2">
+                                        <v-card-title class="text-h6 py-0 text-decoration-underline">
+                                            {{ task.tasktitle.split(' ').slice(0, 4).join(' ') + (task.tasktitle.split(' ').length > 4 ? '...' : '') }}
+                                        </v-card-title>
+                                        <v-card-text class="py-0" style="word-wrap: break-word;">
+                                            {{ task.description.length > 150 ? task.description.slice(0, 150) + '...' : task.description }}
+                                        </v-card-text>
+                                    </v-container>
+                                    <v-container class="w-25 py-2">
+                                        <v-card-actions class="d-flex flex-column align-end ">
+                                            <v-btn class="mb-1" :style="`border:2px solid black`" @click="editTask(task)"><v-icon   icon="mdi-pencil"/></v-btn>
+                                            <v-btn class="mt-1" :style="`border:2px solid black`" @click="deletetask(task)"><v-icon icon="mdi-delete"/></v-btn>
+                                        </v-card-actions>
+                                    </v-container>
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -209,23 +217,37 @@
                                 @dragover="allowDrop($event)"
                             >
                                 <v-card
-                                    class="mx-5 my-2"
+                                    class="mx-5 my-2 d-flex flex-row align-center py-0"
                                     :color="task.color"
                                     :elevation="5"
                                     :draggable="true"
                                     @dragstart="drag($event, task)"
                                     @dragover.prevent
                                 >
-                                    <v-card-title class="text-h6">
-                                        {{ task.tasktitle }}
-                                    </v-card-title>
-                                    <v-card-text>
-                                        {{ task.description }}
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn>
-                                        <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn>
-                                    </v-card-actions>
+                                    <v-container class="w-75 py-2">
+                                        <v-card-title class="text-h6 py-0 text-decoration-underline">
+                                            {{ task.tasktitle.split(' ').slice(0, 4).join(' ') + (task.tasktitle.split(' ').length > 4 ? '...' : '') }}
+                                        </v-card-title>
+                                        <v-card-text class="py-0" style="word-wrap: break-word;">
+                                            {{ task.description.length > 150 ? task.description.slice(0, 150) + '...' : task.description }}
+                                        </v-card-text>
+                                    </v-container>
+                                    <v-container class="w-25 py-2">
+                                        <v-card-actions class="d-flex flex-column align-end ">
+                                            <v-btn class="mb-1" :style="`border:2px solid black`" @click="editTask(task)"><v-icon   icon="mdi-pencil"/></v-btn>
+                                            <v-btn class="mt-1" :style="`border:2px solid black`" @click="deletetask(task)"><v-icon icon="mdi-delete"/></v-btn>
+                                        </v-card-actions>
+                                    </v-container>
+                                    <!-- <v-card-title class="text-h6"> -->
+                                        <!-- {{ task.tasktitle }} -->
+                                    <!-- </v-card-title> -->
+                                    <!-- <v-card-text> -->
+                                        <!-- {{ task.description }} -->
+                                    <!-- </v-card-text> -->
+                                    <!-- <v-card-actions> -->
+                                        <!-- <v-btn class="mx-5" @click="editTask(task)">Edit</v-btn> -->
+                                        <!-- <v-btn class="mx-5" @click="deletetask(task)">Delete</v-btn> -->
+                                    <!-- </v-card-actions> -->
                                 </v-card>
                             </v-col>
                         </v-row>
